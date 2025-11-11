@@ -1,73 +1,62 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-
-  /* ZENPULSAR Brand Colors */
+  /* ZENPULSAR Brand Colors from Brandbook */
   --zp-fuchsia: rgb(201, 38, 212);     /* #C926D4 */
   --zp-electric-blue: rgb(41, 38, 207); /* #2926CF */
-  --zp-white: rgb(255, 255, 255);      /* #FFFFFF */
-  --zp-black: rgb(0, 0, 0);            /* #000000 */
-  
-  /* Legacy ZENPULSAR Colors (for backward compatibility) */
-  --zp-dark: #1a1a1a;
-  --zp-gray: #6b7280;
-  --zp-light-gray: #9ca3af;
-  --zp-border: #e5e7eb;
-  --zp-bg-light: #f9fafb;
-  --zp-bg-subtle: #f3f4f6;
-  --zp-bg-blue: #eff6ff;
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --zp-gradient: linear-gradient(0deg, rgb(201, 38, 212) 0%, rgb(41, 38, 207) 100%);
+
+  /* Dark Theme as Default */
+  --radius: 0;
+  --background: oklch(0.05 0 0);        /* #0a0a0f - Deep dark */
+  --foreground: oklch(1 0 0);           /* White text */
+  --card: oklch(0.08 0 0);              /* #13131a - Card surface */
+  --card-foreground: oklch(0.98 0 0);   /* Almost white */
+  --popover: oklch(0.08 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.65 0.24 318);      /* Fuchsia #C926D4 */
+  --primary-foreground: oklch(1 0 0);   /* White */
+  --secondary: oklch(0.55 0.26 264);    /* Electric Blue #2926CF */
+  --secondary-foreground: oklch(1 0 0); /* White */
+  --muted: oklch(0.15 0 0);
+  --muted-foreground: oklch(0.7 0 0);   /* Muted text */
+  --accent: oklch(0.65 0.24 318);       /* Fuchsia */
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: oklch(0.15 0.05 318);       /* Subtle fuchsia border */
+  --input: oklch(0.15 0 0);
+  --ring: oklch(0.65 0.24 318);         /* Fuchsia ring */
+
+  --chart-1: oklch(0.65 0.24 318);
+  --chart-2: oklch(0.55 0.26 264);
+  --chart-3: oklch(0.7 0.15 264);
+  --chart-4: oklch(0.75 0.2 318);
+  --chart-5: oklch(0.6 0.22 290);
+
+  --sidebar: oklch(0.08 0 0);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.65 0.24 318);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.15 0 0);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.15 0.05 318);
+  --sidebar-ring: oklch(0.65 0.24 318);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono);
+  --font-sans: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Courier New', monospace;
 
-  /* ZENPULSAR Custom Colors */
-  --color-zp-dark: var(--zp-dark);
-  --color-zp-gray: var(--zp-gray);
-  --color-zp-light-gray: var(--zp-light-gray);
-  --color-zp-border: var(--zp-border);
-  --color-zp-bg-light: var(--zp-bg-light);
-  --color-zp-bg-subtle: var(--zp-bg-subtle);
-  --color-zp-bg-blue: var(--zp-bg-blue);
+  /* ZENPULSAR Brand Colors */
+  --color-zp-fuchsia: var(--zp-fuchsia);
+  --color-zp-electric-blue: var(--zp-electric-blue);
 
   /* Custom shadows */
   --shadow-nav: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -109,8 +98,9 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* Fade-in animations */
@@ -204,38 +194,139 @@ body {
 
 /* ZENPULSAR Brand Utility Classes */
 @layer utilities {
+  /* Colors */
   .text-zp-fuchsia {
     color: var(--zp-fuchsia);
   }
-  
+
   .text-zp-electric-blue {
     color: var(--zp-electric-blue);
   }
-  
+
+  .bg-zp-dark {
+    background-color: var(--zp-dark-bg);
+  }
+
+  .bg-zp-surface {
+    background-color: var(--zp-dark-surface);
+  }
+
   .bg-zp-fuchsia {
     background-color: var(--zp-fuchsia);
   }
-  
+
   .bg-zp-electric-blue {
     background-color: var(--zp-electric-blue);
   }
-  
+
   .border-zp-fuchsia {
     border-color: var(--zp-fuchsia);
   }
-  
+
   .border-zp-electric-blue {
     border-color: var(--zp-electric-blue);
   }
-  
-  .bg-zp-gradient {
-    background: linear-gradient(135deg, var(--zp-fuchsia) 0%, var(--zp-electric-blue) 100%);
+
+  .border-zp-dark {
+    border-color: var(--zp-dark-border);
   }
-  
+
+  .bg-zp-gradient {
+    background: var(--zp-gradient);
+  }
+
   .text-zp-gradient {
-    background: linear-gradient(135deg, var(--zp-fuchsia) 0%, var(--zp-electric-blue) 100%);
+    background: var(--zp-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* 8-bit/Pixel effects */
+  .pixelated {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  .glitch {
+    position: relative;
+    animation: glitch 2s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 100% {
+      transform: translate(0);
+    }
+    20% {
+      transform: translate(-2px, 2px);
+    }
+    40% {
+      transform: translate(2px, -2px);
+    }
+    60% {
+      transform: translate(-2px, -2px);
+    }
+    80% {
+      transform: translate(2px, 2px);
+    }
+  }
+
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    animation: scanline 3s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scanline {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(2000%);
+    }
+  }
+
+  .crt {
+    animation: flicker 0.15s infinite;
+  }
+
+  @keyframes flicker {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.98;
+    }
+  }
+
+  .pixel-border {
+    border: 2px solid;
+    border-image-source: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><rect width="2" height="2" fill="white" opacity="0.3"/><rect x="4" width="2" height="2" fill="white" opacity="0.3"/><rect y="4" width="2" height="2" fill="white" opacity="0.3"/><rect x="4" y="4" width="2" height="2" fill="white" opacity="0.3"/></svg>');
+    border-image-slice: 2;
+    border-image-repeat: repeat;
+  }
+
+  .glow-fuchsia {
+    text-shadow: 0 0 10px var(--zp-fuchsia), 0 0 20px var(--zp-fuchsia), 0 0 30px var(--zp-fuchsia);
+  }
+
+  .glow-blue {
+    text-shadow: 0 0 10px var(--zp-electric-blue), 0 0 20px var(--zp-electric-blue), 0 0 30px var(--zp-electric-blue);
+  }
+
+  .glow-gradient {
+    filter: drop-shadow(0 0 10px var(--zp-fuchsia)) drop-shadow(0 0 20px var(--zp-electric-blue));
   }
 }

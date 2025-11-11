@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { GalaxyBackground } from "@/components/common/galaxy-background";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Hero } from "@/components/sections/hero";
+import { HeroDark } from "@/components/sections/hero-dark";
 import { Overview } from "@/components/sections/overview";
 import { Offerings } from "@/components/sections/offerings";
 import { WhyItMatters } from "@/components/sections/why-it-matters";
@@ -47,10 +48,13 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-white text-zp-dark">
-      <Header onDemoClick={() => setIsDemoModalOpen(true)} />
-      
-      <Hero onDemoClick={() => setIsDemoModalOpen(true)} />
+    <>
+      <GalaxyBackground />
+
+      <main className="relative min-h-screen">
+        <Header onDemoClick={() => setIsDemoModalOpen(true)} />
+
+        <HeroDark onDemoClick={() => setIsDemoModalOpen(true)} />
       
       <SectionDivider />
       <Overview />
@@ -87,7 +91,8 @@ export default function HomePage() {
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
         userEmail={submittedEmail}
-      />
-    </main>
+        />
+      </main>
+    </>
   );
 }
