@@ -11,18 +11,28 @@ export function CTA({ onDemoClick }: CTAProps) {
       <div className="max-w-4xl mx-auto text-center">
         <FadeInSection>
           <h2 className="text-4xl md:text-5xl font-bold text-zp-dark mb-8">
-            Ready to Get Started?
+            Contact
           </h2>
           <p className="text-xl text-zp-gray mb-12 leading-relaxed max-w-3xl mx-auto">
-            Start with a pilot. Demonstrate ROI before scaling.
+            Let&apos;s talk about how Zenpulsar can power your strategy.
           </p>
-          <Button
-            onClick={onDemoClick}
-            size="lg"
-            className="shadow-card hover:shadow-lg"
-          >
-            Book Initial Call
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              onClick={onDemoClick}
+              size="lg"
+              className="shadow-card hover:shadow-lg"
+            >
+              Book a Demo
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="shadow-card hover:shadow-lg"
+              onClick={onDemoClick}
+            >
+              Get in Touch
+            </Button>
+          </div>
         </FadeInSection>
       </div>
     </section>

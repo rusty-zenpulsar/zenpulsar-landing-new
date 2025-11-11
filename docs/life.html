@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenpulsar - The AI-Brain for Global Markets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Mono', 'Courier New', monospace;
+            background: #000000;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #gameCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .pixel-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 10px, rgba(138, 43, 226, 0.02) 10px, rgba(138, 43, 226, 0.02) 11px),
+                repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(138, 43, 226, 0.02) 10px, rgba(138, 43, 226, 0.02) 11px);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            animation: pixelFadeIn 1s steps(10) forwards;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            font-family: 'Space Mono', monospace;
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(138, 43, 226, 0.8),
+                0 0 20px rgba(138, 43, 226, 0.6),
+                0 0 30px rgba(138, 43, 226, 0.4),
+                0 0 40px rgba(138, 43, 226, 0.2);
+            animation: glitchText 3s infinite;
+            position: relative;
+        }
+
+        .logo::before,
+        .logo::after {
+            content: 'ZENPULSAR';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo::before {
+            animation: glitch-1 0.5s infinite;
+            color: #00ffff;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .logo::after {
+            animation: glitch-2 0.5s infinite;
+            color: #ff00ff;
+            z-index: -2;
+            opacity: 0.7;
+        }
+
+        .logo .alpha {
+            color: #8a2be2;
+            display: inline-block;
+            animation: pixelPulse 1s steps(4) infinite;
+            text-shadow: 
+                0 0 5px #8a2be2,
+                0 0 10px #8a2be2,
+                0 0 15px #8a2be2;
+        }
+
+        .tagline {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            font-family: 'Space Mono', monospace;
+            animation: typewriter 2s steps(20) 0.5s forwards;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #8a2be2;
+            max-width: 0;
+        }
+
+        .tagline:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0;
+            max-width: 600px;
+            margin: 20px auto 0;
+            line-height: 1.8;
+            font-family: 'Space Mono', monospace;
+            animation: pixelFadeIn 0.5s steps(5) 2s forwards;
+            letter-spacing: 1px;
+        }
+
+        .pixel-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: linear-gradient(90deg, #8a2be2, #6a1b9a);
+            color: white;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            animation: pixelFadeIn 0.5s steps(5) 2.5s forwards;
+            opacity: 0;
+            pointer-events: all;
+            cursor: pointer;
+            border: 2px solid #8a2be2;
+            transition: all 0.3s;
+        }
+
+        .pixel-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+        }
+
+        .pixel-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .pixel-button:hover::before {
+            left: 100%;
+        }
+
+        .partners {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            animation: pixelFadeIn 0.5s steps(5) 3s forwards;
+            opacity: 0;
+        }
+
+        .partners-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            opacity: 0.5;
+            margin-bottom: 15px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .partners-list {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            opacity: 0.3;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+        }
+
+        .partner {
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .partner:hover {
+            opacity: 1;
+            color: #8a2be2;
+            transform: translateY(-2px);
+        }
+
+        .header-info {
+            position: absolute;
+            top: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 60px;
+            z-index: 10;
+            font-family: 'Space Mono', monospace;
+            animation: pixelFadeIn 0.5s steps(5) 0.5s forwards;
+            opacity: 0;
+        }
+
+        .header-info .left,
+        .header-info .right {
+            opacity: 0.5;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes glitchText {
+            0%, 100% { text-shadow: 0 0 10px rgba(138, 43, 226, 0.8); }
+            25% { text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; }
+            50% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; }
+            75% { text-shadow: 0 0 10px rgba(138, 43, 226, 0.8); }
+        }
+
+        @keyframes glitch-1 {
+            0%, 100% { clip-path: inset(0 0 100% 0); }
+            20% { clip-path: inset(20% 0 60% 0); }
+            40% { clip-path: inset(50% 0 20% 0); }
+            60% { clip-path: inset(80% 0 0 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 100% { clip-path: inset(100% 0 0 0); }
+            20% { clip-path: inset(60% 0 20% 0); }
+            40% { clip-path: inset(20% 0 50% 0); }
+            60% { clip-path: inset(0 0 80% 0); }
+            80% { clip-path: inset(70% 0 10% 0); }
+        }
+
+        @keyframes pixelFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pixelPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes typewriter {
+            from { max-width: 0; }
+            to { max-width: 100%; }
+        }
+
+        /* ASCII decoration */
+        .ascii-decoration {
+            position: fixed;
+            font-family: 'Courier New', monospace;
+            color: #8a2be2;
+            opacity: 0.1;
+            font-size: 10px;
+            line-height: 1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ascii-top-left {
+            top: 20px;
+            left: 20px;
+        }
+
+        .ascii-bottom-right {
+            bottom: 20px;
+            right: 20px;
+            text-align: right;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 48px; }
+            .tagline { font-size: 24px; letter-spacing: 4px; }
+            .subtitle { font-size: 14px; }
+            .partners-list { 
+                flex-wrap: wrap; 
+                justify-content: center;
+                gap: 15px;
+            }
+            .header-info { padding: 0 20px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div class="pixel-grid"></div>
+    
+    <div class="ascii-decoration ascii-top-left">
+        <pre>
+╔════════════╗
+║ ZENPULSAR  ║
+║ SYSTEM.AI  ║
+╚════════════╝
+        </pre>
+    </div>
+
+    <div class="ascii-decoration ascii-bottom-right">
+        <pre>
+◢◣◢◣◢◣
+◥◤◥◤◥◤
+v1.0.0
+        </pre>
+    </div>
+
+    <div class="header-info">
+        <div class="left">
+            <div>[GOOGLE_FOR_STARTUPS]</div>
+            <div>[AI_FIRST::COHORT_23]</div>
+        </div>
+        <div class="right">
+            <div>[OCTOBER_2025]</div>
+            <div>[SANDBOX::ORASEYA]</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="logo-container">
+            <div class="logo" data-text="ZENPULSAR">
+                ZENPULS<span class="alpha">α</span>R
+            </div>
+        </div>
+        <h1 class="tagline">THE AI-BRAIN FOR</h1>
+        <h1 class="tagline">GLOBAL MARKETS</h1>
+        <p class="subtitle">
+            Multi-Agent investment research AI<br>
+            platform for next gen asset managers
+        </p>
+        <a href="#" class="pixel-button">INITIALIZE SYSTEM</a>
+    </div>
+
+    <div class="partners">
+        <div class="partners-label">[TRUSTED_PARTNERS]</div>
+        <div class="partners-list">
+            <span class="partner">Bloomberg</span>
+            <span class="partner">Neudata</span>
+            <span class="partner">Datarade</span>
+            <span class="partner">Eagle_Alpha</span>
+            <span class="partner">Snowflake</span>
+            <span class="partner">Crypto_Valley</span>
+        </div>
+    </div>
+
+    <script>
+        // Conway's Game of Life Implementation
+        class GameOfLife {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.cellSize = 8; // Pixel size
+                
+                // Initialize arrays first
+                this.grid = [];
+                this.nextGrid = [];
+                this.history = [];
+                this.maxHistory = 5;
+                
+                // Update canvas dimensions
+                this.updateCanvas();
+                
+                // Initialize grid after canvas is ready
+                this.initGrid();
+                
+                // Mouse interaction
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.isDrawing = false;
+                
+                // Animation
+                this.frameCount = 0;
+                this.updateSpeed = 5; // Update every N frames
+                
+                // Colors
+                this.colors = {
+                    dead: 'rgba(0, 0, 0, 0)',
+                    alive: ['#8a2be2', '#9d4edd', '#b366ff', '#a855f7', '#8b5cf6'],
+                    trail: 'rgba(138, 43, 226, 0.1)',
+                    birth: '#00ffff',
+                    dying: '#ff00ff'
+                };
+                
+                // Patterns for random spawning
+                this.patterns = {
+                    glider: [[0,1,0],[0,0,1],[1,1,1]],
+                    blinker: [[1,1,1]],
+                    beacon: [[1,1,0,0],[1,1,0,0],[0,0,1,1],[0,0,1,1]],
+                    pulsar: [
+                        [0,0,1,1,1,0,0,0,1,1,1,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [1,0,0,0,0,1,0,1,0,0,0,0,1],
+                        [1,0,0,0,0,1,0,1,0,0,0,0,1],
+                        [1,0,0,0,0,1,0,1,0,0,0,0,1],
+                        [0,0,1,1,1,0,0,0,1,1,1,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,1,1,1,0,0,0,1,1,1,0,0],
+                        [1,0,0,0,0,1,0,1,0,0,0,0,1],
+                        [1,0,0,0,0,1,0,1,0,0,0,0,1],
+                        [1,0,0,0,0,1,0,1,0,0,0,0,1],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,1,1,1,0,0,0,1,1,1,0,0]
+                    ],
+                    rpentomino: [[0,1,1],[1,1,0],[0,1,0]]
+                };
+                
+                this.setupEventListeners();
+                this.animate();
+            }
+            
+            updateCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.cols = Math.floor(this.canvas.width / this.cellSize);
+                this.rows = Math.floor(this.canvas.height / this.cellSize);
+            }
+            
+            initGrid() {
+                this.grid = [];
+                this.nextGrid = [];
+                
+                // Ensure we have valid dimensions
+                if (!this.rows || !this.cols || this.rows <= 0 || this.cols <= 0) {
+                    this.updateCanvas();
+                }
+                
+                for (let i = 0; i < this.rows; i++) {
+                    this.grid[i] = [];
+                    this.nextGrid[i] = [];
+                    for (let j = 0; j < this.cols; j++) {
+                        // Random initial state with low density
+                        this.grid[i][j] = Math.random() > 0.92 ? 1 : 0;
+                        this.nextGrid[i][j] = 0;
+                    }
+                }
+                
+                // Add some interesting patterns
+                this.addRandomPatterns();
+            }
+            
+            addRandomPatterns() {
+                const patternNames = Object.keys(this.patterns);
+                
+                // Add 3-5 random patterns
+                const numPatterns = 3 + Math.floor(Math.random() * 3);
+                for (let i = 0; i < numPatterns; i++) {
+                    const patternName = patternNames[Math.floor(Math.random() * patternNames.length)];
+                    const pattern = this.patterns[patternName];
+                    const x = Math.floor(Math.random() * (this.cols - pattern[0].length));
+                    const y = Math.floor(Math.random() * (this.rows - pattern.length));
+                    
+                    this.addPattern(pattern, x, y);
+                }
+            }
+            
+            addPattern(pattern, startX, startY) {
+                if (!pattern || !Array.isArray(pattern)) return;
+                
+                for (let y = 0; y < pattern.length; y++) {
+                    if (!pattern[y] || !Array.isArray(pattern[y])) continue;
+                    
+                    for (let x = 0; x < pattern[y].length; x++) {
+                        const gridY = startY + y;
+                        const gridX = startX + x;
+                        
+                        if (gridY >= 0 && gridY < this.rows && 
+                            gridX >= 0 && gridX < this.cols &&
+                            this.grid[gridY]) {
+                            this.grid[gridY][gridX] = pattern[y][x] || 0;
+                        }
+                    }
+                }
+            }
+            
+            countNeighbors(x, y) {
+                let count = 0;
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        if (i === 0 && j === 0) continue;
+                        
+                        const row = (y + i + this.rows) % this.rows;
+                        const col = (x + j + this.cols) % this.cols;
+                        
+                        if (this.grid[row] && this.grid[row][col] !== undefined) {
+                            count += this.grid[row][col];
+                        }
+                    }
+                }
+                return count;
+            }
+            
+            updateGrid() {
+                // Save current state to history
+                if (this.history.length >= this.maxHistory) {
+                    this.history.shift();
+                }
+                
+                // Deep copy grid safely
+                try {
+                    const gridCopy = this.grid.map(row => [...row]);
+                    this.history.push(gridCopy);
+                } catch (e) {
+                    console.warn('Could not save history:', e);
+                }
+                
+                // Conway's Game of Life rules
+                for (let y = 0; y < this.rows; y++) {
+                    for (let x = 0; x < this.cols; x++) {
+                        const neighbors = this.countNeighbors(x, y);
+                        const currentState = this.grid[y] && this.grid[y][x] ? this.grid[y][x] : 0;
+                        
+                        if (currentState === 1) {
+                            // Cell is alive
+                            if (neighbors < 2 || neighbors > 3) {
+                                this.nextGrid[y][x] = 0; // Dies
+                            } else {
+                                this.nextGrid[y][x] = 1; // Survives
+                            }
+                        } else {
+                            // Cell is dead
+                            if (neighbors === 3) {
+                                this.nextGrid[y][x] = 1; // Birth
+                            } else {
+                                this.nextGrid[y][x] = 0; // Stays dead
+                            }
+                        }
+                    }
+                }
+                
+                // Swap grids
+                [this.grid, this.nextGrid] = [this.nextGrid, this.grid];
+                
+                // Randomly spawn new patterns occasionally
+                if (Math.random() > 0.98) {
+                    this.spawnRandomPattern();
+                }
+            }
+            
+            spawnRandomPattern() {
+                const patterns = [
+                    [[1,1,1]], // Blinker
+                    [[0,1,0],[0,0,1],[1,1,1]], // Glider
+                    [[1,1],[1,1]], // Block
+                ];
+                
+                const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+                const x = Math.floor(Math.random() * (this.cols - 3));
+                const y = Math.floor(Math.random() * (this.rows - 3));
+                
+                this.addPattern(pattern, x, y);
+            }
+            
+            draw() {
+                // Clear canvas with subtle fade effect
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw trails from history
+                this.history.forEach((historyGrid, historyIndex) => {
+                    if (!historyGrid) return;
+                    
+                    const opacity = (historyIndex + 1) / this.history.length * 0.2;
+                    this.ctx.fillStyle = `rgba(138, 43, 226, ${opacity})`;
+                    
+                    for (let y = 0; y < this.rows; y++) {
+                        for (let x = 0; x < this.cols; x++) {
+                            if (historyGrid[y] && historyGrid[y][x] === 1) {
+                                const pixelX = x * this.cellSize;
+                                const pixelY = y * this.cellSize;
+                                this.ctx.fillRect(pixelX, pixelY, this.cellSize - 1, this.cellSize - 1);
+                            }
+                        }
+                    }
+                });
+                
+                // Draw current grid
+                for (let y = 0; y < this.rows; y++) {
+                    for (let x = 0; x < this.cols; x++) {
+                        if (this.grid[y] && this.grid[y][x] === 1) {
+                            const pixelX = x * this.cellSize;
+                            const pixelY = y * this.cellSize;
+                            
+                            // Color based on neighbors for variety
+                            const neighbors = this.countNeighbors(x, y);
+                            const colorIndex = Math.min(neighbors, this.colors.alive.length - 1);
+                            
+                            // Add glow effect for cells with many neighbors
+                            if (neighbors > 3) {
+                                this.ctx.shadowBlur = 10;
+                                this.ctx.shadowColor = this.colors.alive[colorIndex];
+                            } else {
+                                this.ctx.shadowBlur = 0;
+                            }
+                            
+                            this.ctx.fillStyle = this.colors.alive[colorIndex];
+                            this.ctx.fillRect(pixelX, pixelY, this.cellSize - 1, this.cellSize - 1);
+                            
+                            // Add small bright center for active cells
+                            if (neighbors === 2 || neighbors === 3) {
+                                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                                this.ctx.fillRect(
+                                    pixelX + this.cellSize / 3, 
+                                    pixelY + this.cellSize / 3, 
+                                    this.cellSize / 3, 
+                                    this.cellSize / 3
+                                );
+                            }
+                        }
+                    }
+                }
+                
+                // Reset shadow
+                this.ctx.shadowBlur = 0;
+            }
+            
+            setupEventListeners() {
+                // Mouse/touch interaction to create cells
+                const getMousePos = (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const x = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+                    const y = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+                    return {
+                        x: Math.floor((x - rect.left) / this.cellSize),
+                        y: Math.floor((y - rect.top) / this.cellSize)
+                    };
+                };
+                
+                const startDrawing = (e) => {
+                    this.isDrawing = true;
+                    const pos = getMousePos(e);
+                    this.createCells(pos.x, pos.y);
+                };
+                
+                const draw = (e) => {
+                    if (!this.isDrawing) return;
+                    const pos = getMousePos(e);
+                    this.createCells(pos.x, pos.y);
+                };
+                
+                const stopDrawing = () => {
+                    this.isDrawing = false;
+                };
+                
+                // Mouse events
+                this.canvas.addEventListener('mousedown', startDrawing);
+                this.canvas.addEventListener('mousemove', draw);
+                this.canvas.addEventListener('mouseup', stopDrawing);
+                
+                // Touch events
+                this.canvas.addEventListener('touchstart', startDrawing);
+                this.canvas.addEventListener('touchmove', draw);
+                this.canvas.addEventListener('touchend', stopDrawing);
+                
+                // Window resize
+                window.addEventListener('resize', () => {
+                    this.updateCanvas();
+                    this.initGrid();
+                });
+            }
+            
+            createCells(x, y) {
+                // Create a small pattern around the cursor
+                const pattern = [
+                    [0, 1, 0],
+                    [1, 1, 1],
+                    [0, 1, 0]
+                ];
+                
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        const gridY = y + dy;
+                        const gridX = x + dx;
+                        const patternY = dy + 1;
+                        const patternX = dx + 1;
+                        
+                        if (gridY >= 0 && gridY < this.rows && 
+                            gridX >= 0 && gridX < this.cols &&
+                            this.grid[gridY] &&
+                            pattern[patternY] && 
+                            pattern[patternY][patternX]) {
+                            this.grid[gridY][gridX] = pattern[patternY][patternX];
+                        }
+                    }
+                }
+            }
+            
+            animate() {
+                this.frameCount++;
+                
+                if (this.frameCount % this.updateSpeed === 0) {
+                    this.updateGrid();
+                }
+                
+                this.draw();
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // Initialize Game of Life when page loads
+        window.addEventListener('load', () => {
+            const canvas = document.getElementById('gameCanvas');
+            new GameOfLife(canvas);
+            
+            // Add some interaction to the button
+            const button = document.querySelector('.pixel-button');
+            if (button) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Add glitch effect
+                    document.body.style.animation = 'glitch-1 0.3s';
+                    setTimeout(() => {
+                        document.body.style.animation = '';
+                    }, 300);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenpulsar - The AI-Brain for Global Markets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 80px rgba(138, 43, 226, 0.5);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .logo .alpha {
+            background: linear-gradient(135deg, #8a2be2 0%, #9d4edd 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .tagline {
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            animation: slideUp 1.5s ease-out 0.5s both;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            animation: slideUp 1.5s ease-out 0.8s both;
+        }
+
+        .partners {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            animation: fadeIn 2s ease-out 2s both;
+        }
+
+        .partners-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            margin-bottom: 15px;
+        }
+
+        .partners-list {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            opacity: 0.3;
+        }
+
+        .partner {
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .partner:hover {
+            opacity: 1;
+        }
+
+        .header-info {
+            position: absolute;
+            top: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 60px;
+            z-index: 10;
+            animation: fadeIn 2s ease-out 1s both;
+        }
+
+        .header-info .left,
+        .header-info .right {
+            opacity: 0.5;
+            font-size: 14px;
+        }
+
+        .waves {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .wave-path {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            opacity: 0.03;
+            animation: waveAnimation 20s ease-in-out infinite;
+        }
+
+        .wave-path svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(138, 43, 226, 0.8)); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes waveAnimation {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 48px; }
+            .tagline { font-size: 28px; }
+            .subtitle { font-size: 18px; }
+            .partners-list { 
+                flex-wrap: wrap; 
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    
+    <div class="waves">
+        <div class="wave-path">
+            <svg viewBox="0 0 1440 560" preserveAspectRatio="none">
+                <path d="M0,100 C480,200 960,0 1440,100 L1440,560 L0,560 Z" 
+                      fill="none" 
+                      stroke="url(#gradient1)" 
+                      stroke-width="2"/>
+                <path d="M0,200 C480,100 960,300 1440,200 L1440,560 L0,560 Z" 
+                      fill="none" 
+                      stroke="url(#gradient1)" 
+                      stroke-width="2"/>
+                <defs>
+                    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8a2be2;stop-opacity:0.5" />
+                        <stop offset="100%" style="stop-color:#4a0080;stop-opacity:0.1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </div>
+
+    <div class="header-info">
+        <div class="left">
+            <div>Google for Startups</div>
+            <div>AI First cohort 23</div>
+        </div>
+        <div class="right">
+            <div>October 2025</div>
+            <div>SANDBOX by ORASEYA</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="logo-container">
+            <div class="logo">
+                ZENPULS<span class="alpha">α</span>R
+            </div>
+        </div>
+        <h1 class="tagline">THE AI-BRAIN FOR</h1>
+        <h1 class="tagline">GLOBAL MARKETS</h1>
+        <p class="subtitle">
+            Multi-Agent investment research AI<br>
+            platform for next gen asset managers
+        </p>
+    </div>
+
+    <div class="partners">
+        <div class="partners-label">Trusted Partners</div>
+        <div class="partners-list">
+            <span class="partner">Bloomberg</span>
+            <span class="partner">Neudata</span>
+            <span class="partner">Datarade</span>
+            <span class="partner">Eagle Alpha</span>
+            <span class="partner">Snowflake</span>
+            <span class="partner">Crypto Valley</span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Three.js Galaxy Scene
+        let scene, camera, renderer;
+        let particles, galaxy;
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        const clock = new THREE.Clock();
+
+        function init() {
+            // Scene setup
+            scene = new THREE.Scene();
+            
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(
+                75, 
+                window.innerWidth / window.innerHeight, 
+                0.1, 
+                1000
+            );
+            camera.position.z = 50;
+
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: document.getElementById('canvas'),
+                antialias: true,
+                alpha: true 
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Create galaxy
+            createGalaxy();
+            
+            // Create particle system
+            createParticles();
+            
+            // Create flowing lines
+            createFlowingLines();
+
+            // Event listeners
+            document.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('resize', onWindowResize);
+
+            animate();
+        }
+
+        function createGalaxy() {
+            const galaxyGeometry = new THREE.BufferGeometry();
+            const galaxyCount = 5000;
+            const positions = new Float32Array(galaxyCount * 3);
+            const colors = new Float32Array(galaxyCount * 3);
+            const sizes = new Float32Array(galaxyCount);
+
+            const colorInside = new THREE.Color('#8a2be2');
+            const colorOutside = new THREE.Color('#1a0033');
+
+            for(let i = 0; i < galaxyCount; i++) {
+                const i3 = i * 3;
+                
+                // Create spiral galaxy shape
+                const radius = Math.random() * 30;
+                const spinAngle = radius * 0.3;
+                const branchAngle = (i % 3) * ((2 * Math.PI) / 3);
+                
+                const randomX = (Math.random() - 0.5) * 0.3 * radius;
+                const randomY = (Math.random() - 0.5) * 0.3 * radius;
+                const randomZ = (Math.random() - 0.5) * 0.3 * radius;
+                
+                positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
+                positions[i3 + 1] = randomY;
+                positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+                // Color mixing
+                const mixedColor = colorInside.clone();
+                mixedColor.lerp(colorOutside, radius / 30);
+                
+                colors[i3] = mixedColor.r;
+                colors[i3 + 1] = mixedColor.g;
+                colors[i3 + 2] = mixedColor.b;
+
+                sizes[i] = Math.random() * 2;
+            }
+
+            galaxyGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            galaxyGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            galaxyGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+            const galaxyMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 },
+                    pixelRatio: { value: renderer.getPixelRatio() }
+                },
+                vertexShader: `
+                    uniform float time;
+                    uniform float pixelRatio;
+                    attribute float size;
+                    varying vec3 vColor;
+                    
+                    void main() {
+                        vColor = color;
+                        vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+                        vec4 viewPosition = viewMatrix * modelPosition;
+                        vec4 projectedPosition = projectionMatrix * viewPosition;
+                        
+                        gl_Position = projectedPosition;
+                        gl_PointSize = size * 300.0 * pixelRatio / -viewPosition.z;
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vColor;
+                    
+                    void main() {
+                        float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
+                        float strength = 1.0 - distanceToCenter * 2.0;
+                        strength = pow(strength, 3.0);
+                        
+                        vec3 finalColor = mix(vec3(0.0), vColor, strength);
+                        gl_FragColor = vec4(finalColor, strength);
+                    }
+                `,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+                vertexColors: true,
+                transparent: true
+            });
+
+            galaxy = new THREE.Points(galaxyGeometry, galaxyMaterial);
+            scene.add(galaxy);
+        }
+
+        function createParticles() {
+            const particlesGeometry = new THREE.BufferGeometry();
+            const count = 1000;
+            const positions = new Float32Array(count * 3);
+
+            for(let i = 0; i < count * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 100;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                color: 0x9d4edd,
+                size: 0.5,
+                sizeAttenuation: true,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+
+            particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
+        }
+
+        function createFlowingLines() {
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0x8a2be2,
+                transparent: true,
+                opacity: 0.2,
+                blending: THREE.AdditiveBlending
+            });
+
+            for(let i = 0; i < 5; i++) {
+                const curve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(
+                        (Math.random() - 0.5) * 40,
+                        (Math.random() - 0.5) * 40,
+                        (Math.random() - 0.5) * 40
+                    ),
+                    new THREE.Vector3(
+                        (Math.random() - 0.5) * 40,
+                        (Math.random() - 0.5) * 40,
+                        (Math.random() - 0.5) * 40
+                    ),
+                    new THREE.Vector3(
+                        (Math.random() - 0.5) * 40,
+                        (Math.random() - 0.5) * 40,
+                        (Math.random() - 0.5) * 40
+                    )
+                ]);
+
+                const points = curve.getPoints(50);
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line(geometry, lineMaterial);
+                scene.add(line);
+            }
+        }
+
+        function onMouseMove(event) {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const elapsedTime = clock.getElapsedTime();
+            
+            // Smooth camera movement
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
+            
+            camera.position.x = targetX * 10;
+            camera.position.y = targetY * 10;
+            camera.lookAt(scene.position);
+            
+            // Rotate galaxy
+            if(galaxy) {
+                galaxy.rotation.y = elapsedTime * 0.05;
+                galaxy.material.uniforms.time.value = elapsedTime;
+            }
+            
+            // Animate particles
+            if(particles) {
+                particles.rotation.y = elapsedTime * 0.02;
+                particles.rotation.x = elapsedTime * 0.01;
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        // Initialize when DOM is ready
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

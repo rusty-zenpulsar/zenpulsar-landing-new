@@ -7,7 +7,8 @@ import { Hero } from "@/components/sections/hero";
 import { Overview } from "@/components/sections/overview";
 import { Offerings } from "@/components/sections/offerings";
 import { WhyItMatters } from "@/components/sections/why-it-matters";
-import { Pricing } from "@/components/sections/pricing";
+import { Solutions } from "@/components/sections/solutions";
+import { About } from "@/components/sections/about";
 import { CTA } from "@/components/sections/cta";
 import { SectionDivider } from "@/components/common/section-divider";
 import { FloatingDemoButton } from "@/components/common/floating-demo-button";
@@ -58,10 +59,13 @@ export default function HomePage() {
       
       <SectionDivider />
       <WhyItMatters />
-      
+
       <SectionDivider />
-      <Pricing />
-      
+      <Solutions />
+
+      <SectionDivider />
+      <About />
+
       <SectionDivider />
       <CTA onDemoClick={() => setIsDemoModalOpen(true)} />
       

@@ -3,23 +3,24 @@ import { FadeInSection } from "@/components/common/fade-in-section";
 
 const features = [
   {
-    title: "Real-Time Signals",
-    description:
-      "Anticipate market moves with sentiment and geopolitical insight tied to actual contracts.",
+    title: "Institutional-Grade by Design",
+    description: "Performance, reliability, compliance.",
   },
   {
-    title: "AI Automation",
-    description: "Free analysts from repetitive research and news tracking.",
+    title: "Explainable AI",
+    description: "Every signal traced to its source, scored, auditable.",
   },
   {
-    title: "Strategy Testing",
-    description:
-      "Know how your strategies perform under stress — before capital is committed.",
+    title: "Proven ROI",
+    description: "Clients report significant ROI uplift and 80% less research time.",
   },
   {
-    title: "Infrastructure, Not Dashboards",
-    description:
-      "We don't build dashboards. We replace legacy workflows with signal-driven infrastructure.",
+    title: "Validated by Market",
+    description: "Institutional customers in Europe, US and Middle East",
+  },
+  {
+    title: "Extensible",
+    description: "Integrates with your datasets, research, and feeds.",
   },
 ];
 
@@ -28,10 +29,13 @@ export function WhyItMatters() {
     <section id="why-it-matters" className="py-24 px-6 bg-zp-bg-blue">
       <div className="max-w-6xl mx-auto">
         <FadeInSection className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-zp-dark mb-6">Why It Matters</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-zp-dark mb-6">Why Zenpulsar</h2>
+          <p className="text-lg text-zp-gray max-w-2xl mx-auto">
+            Built for Institutions. Proven in Markets.
+          </p>
         </FadeInSection>
 
-        <FadeInSection className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <FadeInSection className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <Card
               key={index}

@@ -3,33 +3,22 @@ import { FadeInSection } from "@/components/common/fade-in-section";
 
 const offerings = [
   {
-    title: "News & Sentiment-Based Trading Signals",
+    title: "Multi-Agent Co-Pilot",
     features: [
-      "Extracted from 3M+ articles daily in 185 languages using NLP and LLMs",
-      "Each article scored as bullish or bearish, with confidence levels",
-      "Covers metals (copper, aluminium), fertilizers, sugar, grains, and energy",
-      "Captures disruptions like strikes, export bans, sanctions, and weather",
-      "Proven correlation with intraday and T-day price movements",
-      "API/MCP integration-ready, ingestible into internal models",
+      "Your AI analyst team, 24/7",
+      "Research 80% faster",
+      "Automate data gathering & financial modelling",
+      "Backtest trade ideas with quant-grade rigour",
+      "Generate audit-ready reports",
     ],
   },
   {
-    title: "Geopolitical & Tariff Risk Factor Matrix",
+    title: "Signal Data Feeds",
     features: [
-      "Stress-test strategies against war, sanctions, regime instability, and trade shocks",
-      "Real-time political risk signals, not static macro overlays",
-      "Built-in taxonomy of triggers: tariffs, export bans, regulatory changes",
-      "Use for scenario modeling, volatility forecasts, and regional hedging",
-    ],
-  },
-  {
-    title: "Multi-Agent AI Systems",
-    features: [
-      "Custom AI agents built for commodity-specific research",
-      "Agents automate research like news parsing, creating summaries from texts, price movements earnings calls",
-      "Agents which provide financial modelling and quant strategy solution based on wired data back to quant researcher",
-      "5x increase of research efficiency of the team without adding headcount",
-      "Examples: quant strategy agent for crypto and commodity trading",
+      "Machine-readable signals for systematic strategies",
+      "Sentiment & event-driven data from 3M+ articles, filings, social posts daily",
+      "Custom taxonomies for assets, regions, and risks",
+      "Intraday/daily sentiment indices with proven market correlation",
     ],
   },
 ];
@@ -38,14 +27,7 @@ export function Offerings() {
   return (
     <section id="offerings" className="py-24 px-6 bg-zp-bg-subtle">
       <div className="max-w-7xl mx-auto">
-        <FadeInSection className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-zp-dark mb-4">Core Offerings</h2>
-          <p className="text-lg text-zp-gray max-w-2xl mx-auto">
-            Comprehensive intelligence solutions designed for modern commodity trading
-          </p>
-        </FadeInSection>
-
-        <FadeInSection className="grid lg:grid-cols-3 gap-10">
+        <FadeInSection className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
           {offerings.map((offering, index) => (
             <Card
               key={index}
