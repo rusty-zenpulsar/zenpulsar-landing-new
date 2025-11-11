@@ -10,6 +10,7 @@ import { WhyItMatters } from "@/components/sections/why-it-matters";
 import { Solutions } from "@/components/sections/solutions";
 import { About } from "@/components/sections/about";
 import { CTA } from "@/components/sections/cta";
+import { Partners } from "@/components/sections/partners";
 import { SectionDivider } from "@/components/common/section-divider";
 import { FloatingDemoButton } from "@/components/common/floating-demo-button";
 import { FormModal } from "@/components/forms/form-modal";
@@ -68,7 +69,9 @@ export default function HomePage() {
 
       <SectionDivider />
       <CTA onDemoClick={() => setIsDemoModalOpen(true)} />
-      
+
+      <Partners />
+
       <Footer onDemoClick={() => setIsDemoModalOpen(true)} />
       
       <FloatingDemoButton onClick={() => setIsDemoModalOpen(true)} />
